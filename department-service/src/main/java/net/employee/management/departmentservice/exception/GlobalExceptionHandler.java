@@ -1,4 +1,4 @@
-package net.employee.management.employeeservice.exception;
+package net.employee.management.departmentservice.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,7 +20,7 @@ public class GlobalExceptionHandler {
                 LocalDateTime.now(),
                 exception.getMessage(),
                 webRequest.getDescription(false),
-                "EMPLOYEE_NOT_FOUND"
+                "DEPARTMENT_NOT_FOUND"
         );
         return new ResponseEntity<>(errorDetails, HttpStatus.NOT_FOUND);
     }
