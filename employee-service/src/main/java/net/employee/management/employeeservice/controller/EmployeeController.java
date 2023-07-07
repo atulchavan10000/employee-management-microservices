@@ -3,6 +3,7 @@ package net.employee.management.employeeservice.controller;
 import jakarta.annotation.Resource;
 import lombok.AllArgsConstructor;
 import net.employee.management.employeeservice.dto.EmployeeDto;
+import net.employee.management.employeeservice.dto.EmployeeWithDepartmentDto;
 import net.employee.management.employeeservice.exception.ErrorDetails;
 import net.employee.management.employeeservice.exception.ResourceNotFoundException;
 import net.employee.management.employeeservice.service.EmployeeService;
@@ -30,9 +31,9 @@ public class EmployeeController {
 
     // get Employee Api
     @GetMapping("/{id}")
-    public ResponseEntity<EmployeeDto> getEmployeeById(@PathVariable("id") Long employeeId){
-        EmployeeDto employeeDto = employeeService.getEmployeeById(employeeId);
-        return new ResponseEntity<>(employeeDto, HttpStatus.OK);
+    public ResponseEntity<EmployeeWithDepartmentDto> getEmployeeById(@PathVariable("id") Long employeeId){
+        EmployeeWithDepartmentDto employeeWithDepartmentDto = employeeService.getEmployeeById(employeeId);
+        return new ResponseEntity<>(employeeWithDepartmentDto, HttpStatus.OK);
     }
 
 

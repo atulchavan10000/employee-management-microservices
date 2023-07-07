@@ -1,10 +1,10 @@
 package net.employee.management.employeeservice.service;
 
 import net.employee.management.employeeservice.dto.EmployeeDto;
-import org.springframework.stereotype.Service;
+import net.employee.management.employeeservice.dto.EmployeeWithDepartmentDto;
 
 public interface EmployeeService {
     EmployeeDto saveEmployee(EmployeeDto employeeDto);
 
-    EmployeeDto getEmployeeById(Long employeeId);
+    EmployeeWithDepartmentDto getEmployeeById(Long employeeId);
 }

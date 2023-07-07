@@ -1,18 +1,22 @@
 package net.employee.management.employeeservice.service.impl;
 
 import lombok.AllArgsConstructor;
+import net.employee.management.employeeservice.dto.DepartmentDto;
 import net.employee.management.employeeservice.dto.EmployeeDto;
+import net.employee.management.employeeservice.dto.EmployeeWithDepartmentDto;
 import net.employee.management.employeeservice.entity.Employee;
 import net.employee.management.employeeservice.exception.ResourceNotFoundException;
 import net.employee.management.employeeservice.repository.EmployeeRepository;
 import net.employee.management.employeeservice.service.EmployeeService;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
+import org.springframework.web.reactive.function.client.WebClient;
 
 @Service
 @AllArgsConstructor
 public class EmployeeServiceImpl implements EmployeeService {
 
+    private WebClient webClient;
     private EmployeeRepository employeeRepository;
     private ModelMapper modelMapper;
     @Override
@@ -26,10 +30,22 @@ public class EmployeeServiceImpl implements EmployeeService {
     // it expects supplier function interface implementation in paramter
     // therefore we can use lambda expression to implement supplier functional interface
     @Override
-    public EmployeeDto getEmployeeById(Long employeeId) {
+    public EmployeeWithDepartmentDto getEmployeeById(Long employeeId) {
         Employee employee = employeeRepository.findById(employeeId).orElseThrow(
                 () -> new ResourceNotFoundException("Employee", "id", employeeId)
         );
-        return modelMapper.map(employee, EmployeeDto.class);
+
+        EmployeeDto employeeDto = modelMapper.map(employee, EmployeeDto.class);
+
+       DepartmentDto departmentDto = webClient.get()
+                .uri("http://localhost:8080/api/departments/" + employee.getDepartmentCode())
+                .retrieve()
+                .bodyToMono(DepartmentDto.class)
+                .block();
+
+        EmployeeWithDepartmentDto apiResponseDto = new EmployeeWithDepartmentDto();
+        apiResponseDto.setEmployeeDto(employeeDto);
+        apiResponseDto.setDepartmentDto(departmentDto);
+        return apiResponseDto;
     }
 }
