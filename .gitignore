@@ -5,3 +5,5 @@
 *.ipr
 api-gateway/mvnw**
 api-gateway/.mvn/**
+config-server/mvnw**
+config-server/.mvn/**
